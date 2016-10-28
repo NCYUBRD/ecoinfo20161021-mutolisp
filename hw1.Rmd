@@ -1,30 +1,41 @@
 ---
-title: "hw1"
+title: "hw1—氣象測站資料聚合練習"
 author: "林政道"
 date: "10/28/2016"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+## 作業內容
+
+1. 計算測站 C0M530 (奮起湖站) 從 2006-2015的
+  * 每月平均氣溫、
+  * 每月最低溫的平均、
+  * 每月最高溫的平均、
+  * 每月平均氣溫、
+  * 平均每月累積降雨 
+
+2. 計算最暖月的每月最高溫平均
+3. 計算最冷月的每月最低溫平均
+
+[原始資料](https://www.dropbox.com/s/1rozrajsrw9vh8v/raw.tar.bz2?dl=0)
+
+## 檔案輸入
+
+首先我們使用 ```data.table``` 來處理中央氣象局的資料，
+用 ```fread()``` 讀取原始檔案，因為原始檔案中沒有欄位名稱，
+之後再使用 ```setnames()``` 來加入欄位名稱。
+```{r}
+library(data.table)
+# 載入資料
+C0M530 <- fread('C0M530.txt', header = FALSE)
+# 看檔案的前幾筆資料
+head(C0M530)
 ```
 
-## R Markdown
+設定欄位名稱
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r}
+setnames(C0M530, c('stno', 'yyyymmdd', 'PS01',
+                   'TX01', 'RH01', 'WD01', 'WD02',
+                   'PP01', 'SS01'))
 ```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
